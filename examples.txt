@@ -1,0 +1,48 @@
+#lang racket
+(require (planet gcr/pdf-render)
+         racket/draw
+         slideshow/pict)
+
+;; The first page of a PDF file.
+(define page (pdf-page "/tmp/oopsla04-gff.pdf" 0))
+
+(define (save-pict file pict)
+  (define bm (pict->bitmap pict))
+  (send bm save-file file 'png))
+
+(save-pict "/tmp/rotated.png"
+ (rotate
+  (frame (scale (inset/clip (page->pict page) -400 -300 -100 -400) 5))
+  (* 0.125 pi)))
+
+(save-pict "/tmp/rotated-bitmap.png"
+ (rotate
+  (frame (scale (inset/clip (bitmap (page->bitmap page))
+                            -400 -300 -100 -400)
+                5))
+  (* 0.125 pi)))
+
+
+(save-pict "/tmp/search.png"
+ (for/fold ([pageview (page->pict page)])
+     ([box (in-list (page-find-text page "the"))])
+   (match-define (list x1 y1 x2 y2) box)
+   (pin-over pageview x1 y1
+             (cellophane
+              (colorize (filled-rectangle (- x2 x1) (- y2 y1)) "yellow")
+              0.5))))
+
+(save-pict "/tmp/text.png"
+ ;; Display the outline of characters side-by-side with
+ ;; the first page of the original PDF
+ (hc-append
+  (for/fold ([pageview (frame (apply blank (page-size page)))])
+      ([box (in-list (page-text-layout page))])
+    (match-define (list x1 y1 x2 y2) box)
+    (pin-over pageview x1 y1
+              (colorize (rectangle (- x2 x1) (- y2 y1))
+                        "gray")))
+  (page->pict page)))
+
+
+
