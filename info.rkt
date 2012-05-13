@@ -6,4 +6,4 @@
 (define categories '(media io))
 (define repositories '("4.x"))
 (define scribblings '(("main.scrbl" ())))
-(define release-notes '((p "Redid everything. Added functions for text and layout.")))
+(define release-notes '((p "Documentation typo/fixes")))

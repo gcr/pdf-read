@@ -4,9 +4,9 @@
          slideshow/pict)
 
 (provide/contract
- [pdf-document? (any/c . -> . bool?)]
- [pdf-page? (any/c . -> . bool?)]
- [rectangle? (any/c . -> . bool?)]
+ [pdf-document? (any/c . -> . boolean?)]
+ [pdf-page? (any/c . -> . boolean?)]
+ [rectangle? (any/c . -> . boolean?)]
  [open-pdf-uri (string? (or/c string? false?) . -> .
                 (or/c PopplerDocumentPointer? false?))]
  [to-doc (pdf-document? . -> . PopplerDocumentPointer?)]
