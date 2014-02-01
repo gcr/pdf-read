@@ -1,15 +1,14 @@
-#lang scribble/doc
+#lang scribble/manual
 @(require scribble/manual
-          planet/scribble
           (for-label racket)
           (for-label racket/gui)
           (for-label slideshow/pict)
-          (for-label (this-package-in main)))
+          (for-label pdf-read))
 
 @title{pdf-read: Read and render PDF files}
 @author{gcr, based on code by Jens Axel Søgaard}
 
-@defmodule/this-package[main]{
+@defmodule[pdf-read]{
 
 This library lets Racket render PDF files. You can also gather information
 about the text or layout.
@@ -18,8 +17,6 @@ This requires @tt{libpoppler}, and thus likely only works on Linux or Mac OSX.
 Windows might work if you insctall Poppler, but I can't make promises.
 
 }
-
-@table-of-contents[]
 
 @section{Examples}
 
