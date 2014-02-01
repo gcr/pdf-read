@@ -6,7 +6,7 @@
           (for-label slideshow/pict)
           (for-label (this-package-in main)))
 
-@title{@bold{pdf-render}: Render and parse PDF files}
+@title{pdf-read: Read and render PDF files}
 @author{gcr, based on code by Jens Axel Søgaard}
 
 @defmodule/this-package[main]{
@@ -27,7 +27,7 @@ Showing a PDF as a pict is as easy as you'd expect:
 @codeblock{
 #lang racket
 (require slideshow/pict
-         (planet gcr/pdf-render))
+         pdf-read)
 
 (show-pict (page->pict "oopsla04-gff.pdf"))
 }

@@ -15,6 +15,13 @@
 (define-cpointer-type _PopplerDocumentPointer)
 (define-cpointer-type _PopplerPagePointer)
 
+(define (gchar->string fun)
+  (lambda args
+    (define value (apply fun args))
+    (define str (cast value _pointer _string))
+    (g_free value)
+    str))
+
 (define pdf-document?
   (or/c path-string? PopplerDocumentPointer?))
 (define pdf-page?
@@ -129,15 +136,15 @@
         [style : (_enum '(glyph word line))]
         [rect : (_ptr i _PopplerRectangle)
               = (make-PopplerRectangle x1 y1 x2 y2)]
-        -> _string)
-  #:wrap (allocator g_free)
+        -> _pointer)
+  #:wrap gchar->string
   #:c-id poppler_page_get_selected_text)
 
 (define-poppler page-text
   (_fun (maybe-page) ::
         [page-ptr : _PopplerPagePointer = (to-page maybe-page)]
-        -> _string)
-  #:wrap (allocator g_free)
+        -> _pointer )
+  #:wrap gchar->string
   #:c-id poppler_page_get_text)
 
 (define-poppler page-find-text
@@ -212,48 +219,51 @@
 (define-poppler pdf-title
   (_fun (maybe-doc) ::
         [doc-ptr : _PopplerDocumentPointer = (to-doc maybe-doc)]
-        -> _string)
-  #:wrap (allocator g_free)
+        -> _pointer)
+  #:wrap gchar->string
   #:c-id poppler_document_get_title)
 
 (define-poppler pdf-author
   (_fun (maybe-doc) ::
         [doc-ptr : _PopplerDocumentPointer = (to-doc maybe-doc)]
-        -> _string)
-  #:wrap (allocator g_free)
+        -> _pointer)
+  #:wrap gchar->string
+  ;; MEMORY LEAK
+  ;; TODO: this is actually a _gchar* which *IS* a string but needs
+  ;; g_free called on its _pointer object.
   #:c-id poppler_document_get_author)
 
 (define-poppler pdf-subject
   (_fun (maybe-doc) ::
         [doc-ptr : _PopplerDocumentPointer = (to-doc maybe-doc)]
-        -> _string)
-  #:wrap (allocator g_free)
+        -> _pointer)
+  #:wrap gchar->string
   #:c-id poppler_document_get_subject)
 
 (define-poppler pdf-keywords
   (_fun (maybe-doc) ::
         [doc-ptr : _PopplerDocumentPointer = (to-doc maybe-doc)]
-        -> _string)
-  #:wrap (allocator g_free)
+        -> _pointer)
+  #:wrap gchar->string
   #:c-id poppler_document_get_keywords)
 
 (define-poppler pdf-creator
   (_fun (maybe-doc) ::
         [doc-ptr : _PopplerDocumentPointer = (to-doc maybe-doc)]
-        -> _string)
-  #:wrap (allocator g_free)
+        -> _pointer)
+  #:wrap gchar->string
   #:c-id poppler_document_get_creator)
 
 (define-poppler pdf-producer
   (_fun (maybe-doc) ::
         [doc-ptr : _PopplerDocumentPointer = (to-doc maybe-doc)]
-        -> _string)
-  #:wrap (allocator g_free)
+        -> _pointer)
+  #:wrap gchar->string
   #:c-id poppler_document_get_producer)
 
 (define-poppler page-label
   (_fun (maybe-page) ::
         [doc-ptr : _PopplerPagePointer = (to-page maybe-page)]
-        -> _string)
-  #:wrap (allocator g_free)
+        -> _pointer)
+  #:wrap gchar->string
   #:c-id poppler_page_get_label)
