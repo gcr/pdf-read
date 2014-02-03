@@ -161,14 +161,18 @@
 (define-poppler page-text-layout
   (_fun (maybe-page) ::
         [page-ptr : _PopplerPagePointer = (to-page maybe-page)]
-        [rects : (_ptr o _pointer)]
+        [c_rects : (_ptr o _pointer)]
         ;; my brain just exploded. ^^ is this right?
         [nrects : (_ptr o _uint)]
         -> [rglist : _bool]
-        -> (begin0
-             (map PopplerRectangle->list
-                  (cblock->list rects _PopplerRectangle nrects))
-             (g_free rects)))
+        -> (cond
+            [(not rglist) '()]
+            [rglist
+             (define racket_rects
+               (map PopplerRectangle->list
+                    (cblock->list c_rects _PopplerRectangle nrects)))
+             (g_free c_rects)
+             racket_rects]))
   #:c-id poppler_page_get_text_layout)
 
 (define (page-text-with-layout maybe-page)
