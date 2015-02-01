@@ -6,3 +6,5 @@
 (define categories '(media io))
 ;; (define repositories '("4.x"))
 (define scribblings '(("main.scrbl" ())))
+(define deps '("base" "gui-lib" "draw-lib" "slideshow-lib"))
+(define build-deps '("scribble-lib" "racket-doc" "pict-doc" "draw-doc"))
