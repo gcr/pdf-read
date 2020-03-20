@@ -284,6 +284,6 @@ sections of the PDF. It may even be some other exotic name like @racket["Table o
 }
 
 @section{Bugs and Issues}
-Note that @racket[pdf->pict] draws directly to the underlying surface's cairo
+Note that @racket[page->pict] draws directly to the underlying surface's cairo
 context. This may have problems if the @racket[dc<%>] is not backed by cairo or
 if you perform different transformations (like cropping or blurring).
