@@ -14,7 +14,7 @@ This library lets Racket render PDF files. You can also gather information
 about the text or layout.
 
 This requires @tt{libpoppler}, and thus likely only works on Linux or Mac OSX.
-Windows might work if you insctall Poppler, but I can't make promises.
+Windows might work if you install Poppler, but I can't make promises.
 
 }
 
